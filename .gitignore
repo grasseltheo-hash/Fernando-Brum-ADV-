@@ -1,0 +1,14 @@
+# Lista branca: nada entra no repositório, exceto o que está liberado abaixo.
+#
+# Esta pasta é a de trabalho do projeto e guarda também os PSDs dos carrosséis
+# (375 MB no total, dois deles acima do limite de 100 MB por arquivo do GitHub)
+# e as fotos de origem. Nada disso vai para o ar, então nada disso é versionado.
+#
+# Para publicar um arquivo novo, acrescente uma linha "!nome-do-arquivo" aqui.
+
+*
+
+!.gitignore
+!README.md
+!index.html
+!og-capa.jpg
