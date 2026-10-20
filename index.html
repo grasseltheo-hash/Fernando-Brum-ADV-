@@ -18,11 +18,18 @@
   Aparece em 5 lugares: os 3 botões, o link tel: do rodapé, a constante
   WHATSAPP no <script> e o JSON-LD.
 
+  META PIXEL
+  ----------------------------------------------------------------------------
+  ID 967634153089393, no fim do <head>. Dispara PageView ao abrir e Contact
+  ao clicar em qualquer um dos 3 botões de WhatsApp.
+  Só roda no domínio de produção — ver o teste de hostname no próprio script.
+
   SE O DOMÍNIO MUDAR
   ----------------------------------------------------------------------------
-  Procure por  fernandobrumadvassociados.com.br  — são 6 ocorrências
-  funcionais: canonical, og:url, og:image, twitter:image e os campos url e
-  image do JSON-LD.
+  Procure por  fernandobrumadvassociados.com.br  — são 7 ocorrências
+  funcionais: canonical, og:url, og:image, twitter:image, os campos url e
+  image do JSON-LD, e o teste de hostname do Meta Pixel. Esquecer a última
+  faz o pixel parar de registrar sem dar erro visível.
   ============================================================================
 -->
 <html lang="pt-BR" class="no-js">
@@ -570,6 +577,33 @@ body::after{
   .contato__inner{max-width:none}
 }
 </style>
+
+<!-- Meta Pixel — ID 967634153089393
+     Só inicializa no domínio de produção. O endereço .vercel.app, a prévia
+     compartilhada com o cliente e o arquivo aberto por file:// não disparam
+     evento nenhum — do contrário, visita de teste entraria no público do
+     anúncio e sujaria a otimização da campanha. -->
+<script>
+(function () {
+  if (!/(^|\.)fernandobrumadvassociados\.com\.br$/.test(location.hostname)) { return; }
+
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '967634153089393');
+  fbq('track', 'PageView');
+})();
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=967634153089393&amp;ev=PageView&amp;noscript=1"
+alt=""/></noscript>
+<!-- Fim do Meta Pixel -->
 </head>
 
 <body>
@@ -865,6 +899,20 @@ body::after{
   var ctas = document.querySelectorAll('[data-cta]');
   for (var i = 0; i < ctas.length; i++) {
     ctas[i].setAttribute('href', destino);
+    ctas[i].addEventListener('click', avisaConversao);
+  }
+
+  /* Clique no WhatsApp é a única conversão desta página — não tempo de
+     leitura, não rolagem. O atributo data-cta já existia no HTML para isso;
+     ele diz de qual dos três botões veio o clique (hero, reconhecimento ou
+     rodapé), o que permite comparar o desempenho de cada um.
+     "Contact" é evento padrão do Meta, então serve de objetivo de campanha
+     sem configuração extra no Gerenciador. */
+  function avisaConversao() {
+    if (!window.fbq) { return; }   // fora de produção o pixel nem carrega
+    fbq('track', 'Contact', {
+      content_name: 'WhatsApp — ' + this.getAttribute('data-cta')
+    });
   }
 
   /* ------------------------------------------------------------------

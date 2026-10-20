@@ -24,9 +24,27 @@ O telefone atual é **(55) 99698-7100** — internacional `5555996987100` — e 
 em 5 lugares: os 3 botões de WhatsApp, o link `tel:` do rodapé, a constante
 `WHATSAPP` no `<script>` e o JSON-LD.
 
-Se o domínio mudar, procure por `fernandobrumadvassociados.com.br`: são 6
-ocorrências funcionais (canonical, `og:url`, `og:image`, `twitter:image` e os
-campos `url` e `image` do JSON-LD).
+Se o domínio mudar, procure por `fernandobrumadvassociados.com.br`: são 7
+ocorrências funcionais (canonical, `og:url`, `og:image`, `twitter:image`, os
+campos `url` e `image` do JSON-LD, e o teste de hostname do Meta Pixel).
+
+## Meta Pixel
+
+ID `967634153089393`, no fim do `<head>`.
+
+| Evento | Quando dispara |
+|---|---|
+| `PageView` | ao abrir a página |
+| `Contact` | ao clicar em qualquer um dos 3 botões de WhatsApp |
+
+O `Contact` leva em `content_name` de qual botão veio o clique — `hero`,
+`reconhecimento` ou `rodape` —, o que permite comparar o desempenho dos três.
+
+**O pixel só roda no domínio de produção.** Há um teste de `location.hostname`
+no início do script. Isso mantém fora da conta visitas pelo endereço
+`.vercel.app`, pela prévia compartilhada e pelo arquivo aberto localmente —
+visita de teste no público de remarketing estraga a otimização da campanha.
+Para testar com o Meta Pixel Helper, use o domínio real.
 
 ## Decisões que não são óbvias no código
 
